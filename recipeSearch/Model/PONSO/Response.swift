@@ -9,10 +9,10 @@
 import Foundation
 struct Response : Codable{
     let from :Int?
-    let to :Int?
+    var to :Int?
     let count :Int?
-    let _links :Links?
-    let hits :[Hit]?
+    var _links :Links?
+    var hits :[Hit]?
 
 
 

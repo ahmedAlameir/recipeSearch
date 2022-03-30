@@ -29,6 +29,7 @@
 		761EFEE727F3B061002F25A2 /* recipeSearch.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 761EFEE527F3B061002F25A2 /* recipeSearch.xcdatamodeld */; };
 		761EFEE927F3B068002F25A2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 761EFEE827F3B068002F25A2 /* Assets.xcassets */; };
 		761EFEEC27F3B068002F25A2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 761EFEEA27F3B068002F25A2 /* LaunchScreen.storyboard */; };
+		768110FD27F5090D0007984D /* Health.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768110FC27F5090D0007984D /* Health.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		761EFEE827F3B068002F25A2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		761EFEEB27F3B068002F25A2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		761EFEED27F3B068002F25A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		768110FC27F5090D0007984D /* Health.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Health.swift; sourceTree = "<group>"; };
 		9EE823048AA1A1BB016CBB0D /* Pods_recipeSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_recipeSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E166B426A32F3107782EB51C /* Pods-recipeSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-recipeSearch.debug.xcconfig"; path = "Target Support Files/Pods-recipeSearch/Pods-recipeSearch.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -83,6 +85,7 @@
 		76175D5F27F480C40081DE98 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				768110FB27F508E40007984D /* HealthCatag */,
 				76175D7327F494130081DE98 /* NetworkServices */,
 				76175D6027F481060081DE98 /* PONSO */,
 			);
@@ -121,6 +124,7 @@
 				76175D7B27F49CB80081DE98 /* SearchRecipeViewController.swift */,
 				76175D7D27F4D8480081DE98 /* HealthLabelsCollectionViewCell.swift */,
 				76175D7E27F4D8480081DE98 /* HealthLabelsCollectionViewCell.xib */,
+				761EFEE227F3B061002F25A2 /* Main.storyboard */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -150,13 +154,20 @@
 				76175D5F27F480C40081DE98 /* Model */,
 				761EFEDC27F3B061002F25A2 /* AppDelegate.swift */,
 				761EFEDE27F3B061002F25A2 /* SceneDelegate.swift */,
-				761EFEE227F3B061002F25A2 /* Main.storyboard */,
 				761EFEE827F3B068002F25A2 /* Assets.xcassets */,
 				761EFEEA27F3B068002F25A2 /* LaunchScreen.storyboard */,
 				761EFEED27F3B068002F25A2 /* Info.plist */,
 				761EFEE527F3B061002F25A2 /* recipeSearch.xcdatamodeld */,
 			);
 			path = recipeSearch;
+			sourceTree = "<group>";
+		};
+		768110FB27F508E40007984D /* HealthCatag */ = {
+			isa = PBXGroup;
+			children = (
+				768110FC27F5090D0007984D /* Health.swift */,
+			);
+			path = HealthCatag;
 			sourceTree = "<group>";
 		};
 		EDE9F29B562B3BD95EEFEF9F /* Pods */ = {
@@ -298,6 +309,7 @@
 				76175D6E27F48FF90081DE98 /* Links.swift in Sources */,
 				76175D6427F485750081DE98 /* Recipe.swift in Sources */,
 				761EFEE727F3B061002F25A2 /* recipeSearch.xcdatamodeld in Sources */,
+				768110FD27F5090D0007984D /* Health.swift in Sources */,
 				76175D6227F482EF0081DE98 /* Response.swift in Sources */,
 				76175D6C27F48F5D0081DE98 /* Link.swift in Sources */,
 				76175D7F27F4D8480081DE98 /* HealthLabelsCollectionViewCell.swift in Sources */,

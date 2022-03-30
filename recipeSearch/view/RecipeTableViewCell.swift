@@ -53,6 +53,8 @@ extension RecipeTableViewCell:UICollectionViewDelegate,UICollectionViewDataSourc
         guard let HealthLabels = self.HealthLabels else{
             return cell
         }
+        cell.healthLabels.layer.cornerRadius = 50
+
         cell.healthLabels.text = HealthLabels[indexPath.row]
         return cell
     }

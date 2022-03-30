@@ -13,7 +13,6 @@ class HealthLabelsCollectionViewCell: UICollectionViewCell {
     @IBOutlet var healthLabels: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
-       
 
     }
 
