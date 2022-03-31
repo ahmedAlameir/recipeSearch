@@ -11,8 +11,14 @@ import UIKit
 class SearchRecipeViewController: UIViewController {
     @IBOutlet var searchTableView: UITableView!
     @IBOutlet var healthCatagory: UICollectionView!
+    @IBOutlet var searchBar: UISearchBar!
     var response:Response?
+    var searchText = String()
+    let health = Health()
+    var selectedRecipe: Recipe?
+    var healthRequast = String()
     let networkServices = NetworkServices()
+    var healthFilterState : Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
         var nib = UINib(nibName: "RecipeTableViewCell", bundle: nil)
@@ -23,17 +29,26 @@ class SearchRecipeViewController: UIViewController {
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
+             if segue.identifier == "GoToDetails"
+       {
+            let view = segue.destination as! RecipeDetailsViewController
+        guard let recipe = self.selectedRecipe  else {
+            return
+        }
+        view.recipe = recipe
+
+
+        }
+
         // Pass the selected object to the new view controller.
     }
-    */
+    
     func apiNetWorkCall(query:String){
-                networkServices.fetchRecipe(query: query){ result in
+                networkServices.fetchRecipe(query: query, health: healthRequast){ result in
             switch result
             {
             case .success(let response):
@@ -118,11 +133,48 @@ extension SearchRecipeViewController:UITableViewDelegate,UITableViewDataSource{
             
         }
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let recipe = self.response?.hits?[indexPath.row].recipe else {
+            return
+        }
+        selectedRecipe = recipe
+        performSegue(withIdentifier: "GoToDetails", sender: selectedRecipe)
+    }
     
 }
 extension SearchRecipeViewController:UISearchBarDelegate{
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         apiNetWorkCall(query: searchText)
+        self.searchText = searchText
     }
 
+}
+extension SearchRecipeViewController:UICollectionViewDelegate,UICollectionViewDataSource{
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return health.health.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = healthCatagory.dequeueReusableCell(withReuseIdentifier: "healthLabelsCell", for: indexPath) as!HealthLabelsCollectionViewCell
+        cell.healthLabels.text = health.health[indexPath.row]
+        return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch health.health[indexPath.row] {
+        case "all":
+            healthFilterState = false
+            healthRequast = ""
+        default:
+            healthFilterState = true
+            healthRequast.append(contentsOf: "&health="+health.health[indexPath.row])
+            
+        }
+        apiNetWorkCall(query: searchText)
+        
+    }
+    
+    
 }
