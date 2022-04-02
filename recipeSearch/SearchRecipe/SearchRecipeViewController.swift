@@ -16,50 +16,23 @@ class SearchRecipeViewController: UIViewController {
     
     var presenter: (ViewToPresenterSearchRecipeProtocol & InteractorToPresenterSearchRecipeProtocol)?
     
-    
-    var response:Response?
-    var selectedRecipe: Recipe?
-    var healthRequast = String()
-    let networkServices = NetworkServices()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         presenter?.viewDidLoad()
         nibRegester()
     }
     
-
     func nibRegester(){
         var nib = UINib(nibName: "RecipeTableViewCell", bundle: nil)
         self.searchTableView.register(nib, forCellReuseIdentifier: "searchCell")
         nib = UINib(nibName: "HealthLabelsCollectionViewCell", bundle: nil)
         self.healthCatagory.register(nib, forCellWithReuseIdentifier: "healthLabelsCell")
     }
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-             if segue.identifier == "GoToDetails"
-       {
-            let view = segue.destination as! RecipeDetailsViewController
-        guard let recipe = self.selectedRecipe  else {
-            return
-        }
-        view.recipe = recipe
-
-
-        }
-
-        // Pass the selected object to the new view controller.
-    }
-    
-
 }
-extension SearchRecipeViewController:UITableViewDelegate,UITableViewDataSource{
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
     
+
+
+extension SearchRecipeViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter?.tableViewNumberOfRows() ?? 0
     }
@@ -88,10 +61,6 @@ extension SearchRecipeViewController:UISearchBarDelegate{
 }
 
 extension SearchRecipeViewController:UICollectionViewDelegate,UICollectionViewDataSource{
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return presenter?.collectionViewNumberOfItems() ?? 0
     }

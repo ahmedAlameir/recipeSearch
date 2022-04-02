@@ -10,7 +10,7 @@
         <!--Recipes Search-->
         <scene sceneID="yab-MV-fsd">
             <objects>
-                <viewController storyboardIdentifier="SearchRecipeViewController" id="6F5-Lj-nhX" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchRecipeViewController" id="6F5-Lj-nhX" customClass="SearchRecipeViewController" customModule="recipeSearch" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vPz-xN-cc5">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -61,12 +61,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kv2-fd-J9v" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="636.23188405797111" y="191.51785714285714"/>
+            <point key="canvasLocation" x="1546.376811594203" y="191.51785714285714"/>
         </scene>
         <!--Recipe Details View Controller-->
         <scene sceneID="cKg-YK-ePS">
             <objects>
-                <viewController id="7ep-Mt-AF4" customClass="RecipeDetailsViewController" customModule="recipeSearch" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RecipeDetailsViewController" id="7ep-Mt-AF4" customClass="RecipeDetailsViewController" customModule="recipeSearch" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="D4I-GD-5ix">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -120,7 +120,7 @@
                     <navigationItem key="navigationItem" id="TbA-fu-9bQ">
                         <barButtonItem key="rightBarButtonItem" title="Item" image="square.and.arrow.up" catalog="system" id="svF-Su-geN">
                             <connections>
-                                <action selector="shearSours:" destination="7ep-Mt-AF4" id="Dbx-Jf-S7K"/>
+                                <action selector="shareURL:" destination="7ep-Mt-AF4" id="aqZ-iI-Pbi"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -131,7 +131,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kGe-s5-PsJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1334.7826086956522" y="191.51785714285714"/>
+            <point key="canvasLocation" x="2246" y="192"/>
         </scene>
     </scenes>
     <resources>

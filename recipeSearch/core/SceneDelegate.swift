@@ -20,7 +20,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let winScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: winScene)
         let firstViewControler = RouterSearchRecipe.createMoudle()
-        window?.rootViewController=firstViewControler
+        let navigationControler = UINavigationController(rootViewController: firstViewControler ?? UIViewController())
+        window?.rootViewController=navigationControler
         window!.makeKeyAndVisible()
         
         
