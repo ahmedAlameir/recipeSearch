@@ -54,4 +54,17 @@ class NetworkServices {
                   task.resume()
 
     }
+    func getImage(from url: String, completion: @escaping (Result<Data?,Error>)->Void) {
+      guard let url = URL(string: url) else{
+                return
+            }
+      
+        let task = URLSession.shared.dataTask(with: url) { (data, _, erorr) in
+            guard let data = data else{
+                return
+            }
+            completion(.success(data))
+        }
+        task.resume()
+    }
 }

@@ -17,6 +17,8 @@ class RecipeDetailPresenter:ViewToPresenterRecipeDetailsProtocol{
 
     var recipe:Recipe?
     
+    var image:UIImage?
+    
     init(view: PresenterToViewRecipeDetailsProtocol, interactor: PresenterToInteractorRecipeDetailsProtocol, router: PresenterToRouterRecipeDetailsProtocol) {
         self.view = view
         self.interactor = interactor
@@ -24,9 +26,7 @@ class RecipeDetailPresenter:ViewToPresenterRecipeDetailsProtocol{
     }
     
     func viewDidLoad() {
-        guard let imageUrl = recipe?.image else {return}
-       
-        interactor?.fatchImageData(url: imageUrl)
+        interactor?.fatchImageData()
     }
     
     func reload() {
@@ -34,7 +34,10 @@ class RecipeDetailPresenter:ViewToPresenterRecipeDetailsProtocol{
     }
     
     func populateDataIn(recipeImageView: UIImageView, recipeLabel: UILabel) {
-        //
+        recipeImageView.image = image
+        guard let label = recipe?.label else {return}
+        recipeLabel.text = label
+        
     }
     
     func shareURL(viewController: UIViewController) {
@@ -74,12 +77,13 @@ class RecipeDetailPresenter:ViewToPresenterRecipeDetailsProtocol{
 }
 extension RecipeDetailPresenter:InteractorToPresenterRecipeDetailsProtocol{
     func fatchImageSuccess(recipe: Recipe?, image: UIImage) {
-        //
+        self.image = image
         self.recipe=recipe
+        view?.onFatchImageSuccess()
     }
     
     func fatchImageFailure(error: String) {
-        //
+        view?.onFatchImageFailure(error: error)
     }
     
     

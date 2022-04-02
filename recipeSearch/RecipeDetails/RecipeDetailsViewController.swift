@@ -13,15 +13,16 @@ class RecipeDetailsViewController: UIViewController {
     
     var presenter: (ViewToPresenterRecipeDetailsProtocol& InteractorToPresenterRecipeDetailsProtocol)?
 
+    @IBOutlet var recipeImage: UIImageView!
     @IBOutlet var recipeTitle: UILabel!
     @IBOutlet var ingredientTable: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let labal = self.recipe?.label else{
-            return
-        }
-        recipeTitle.text = labal
+    
+        presenter?.viewDidLoad()
+    
+        
 
     }
     
@@ -43,6 +44,18 @@ extension RecipeDetailsViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       
         return presenter?.tableViewSetCell(tableView: ingredientTable, cellForRowAt: indexPath) ?? UITableViewCell()
+    }
+    
+    
+}
+extension RecipeDetailsViewController:PresenterToViewRecipeDetailsProtocol{
+    func onFatchImageSuccess() {
+        ingredientTable.reloadData()
+        presenter?.populateDataIn(recipeImageView: recipeImage, recipeLabel: recipeTitle)
+    }
+    
+    func onFatchImageFailure(error: String) {
+        print(error)
     }
     
     

@@ -75,8 +75,8 @@
                                 <rect key="frame" x="0.0" y="80" width="414" height="184"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v9z-dG-oRA">
-                                <rect key="frame" x="130" y="272" width="130" height="37"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v9z-dG-oRA">
+                                <rect key="frame" x="104" y="272" width="190" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -126,12 +126,13 @@
                     </navigationItem>
                     <connections>
                         <outlet property="ingredientTable" destination="8e4-AR-RDp" id="mAA-HL-GxO"/>
+                        <outlet property="recipeImage" destination="mnU-Xs-t2x" id="qKm-Zs-CTd"/>
                         <outlet property="recipeTitle" destination="v9z-dG-oRA" id="Cys-JY-e3f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kGe-s5-PsJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2246" y="192"/>
+            <point key="canvasLocation" x="2243.4782608695655" y="191.51785714285714"/>
         </scene>
     </scenes>
     <resources>

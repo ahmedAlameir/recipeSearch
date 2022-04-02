@@ -33,7 +33,7 @@ protocol PresenterToViewRecipeDetailsProtocol: AnyObject {
 protocol PresenterToInteractorRecipeDetailsProtocol{
     var presenter: InteractorToPresenterRecipeDetailsProtocol? { get set }
     var recipe: Recipe? {get set}
-    func fatchImageData(url:String)
+    func fatchImageData()
 }
 
 protocol InteractorToPresenterRecipeDetailsProtocol: AnyObject {

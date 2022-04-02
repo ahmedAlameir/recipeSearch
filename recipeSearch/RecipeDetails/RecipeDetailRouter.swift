@@ -9,7 +9,13 @@
 import UIKit
 class RecipeDetailsRouter: PresenterToRouterRecipeDetailsProtocol{
     static func creatModule(with recipe: Recipe) -> UIViewController? {
-         let view = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "\(RecipeDetailsViewController.self)") as! RecipeDetailsViewController
+        let view = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "\(RecipeDetailsViewController.self)") as! RecipeDetailsViewController
+        let interactor = RecipeDetailInteractor()
+        interactor.recipe = recipe
+        let router = RecipeDetailsRouter()
+        let presenter = RecipeDetailPresenter(view: view, interactor: interactor, router: router)
+        view.presenter = presenter
+        interactor.presenter = presenter
         return view
     }
     
