@@ -38,9 +38,7 @@ extension RecipeTableViewCell:UICollectionViewDelegate,UICollectionViewDataSourc
         HealthLabels = healthLabels
         recipeHealthLabels.reloadData()
     }
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let count = HealthLabels?.count else{
             return 0
@@ -53,9 +51,11 @@ extension RecipeTableViewCell:UICollectionViewDelegate,UICollectionViewDataSourc
         guard let HealthLabels = self.HealthLabels else{
             return cell
         }
-        cell.healthLabels.layer.cornerRadius = 50
+       
 
         cell.healthLabels.text = HealthLabels[indexPath.row]
+        cell.healthLabels.backgroundColor = .systemTeal
+        cell.layer.cornerRadius = 50
         return cell
     }
     

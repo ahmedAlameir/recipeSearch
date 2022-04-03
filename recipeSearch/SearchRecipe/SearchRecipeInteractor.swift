@@ -6,10 +6,14 @@
 //  Copyright © 2022 ahmed osama. All rights reserved.
 //
 
-import Foundation
+import UIKit
 class InteractorSearchRecipe:PresenterToInteractorSearchRecipeProtocol{
-    
+
+    var image = UIImage()
+   
+
     let networkServices = NetworkServices()
+    let recentRecipeData = RecentRecipe()
     
     weak var presenter: InteractorToPresenterSearchRecipeProtocol?
     var response: Response?
@@ -45,6 +49,26 @@ class InteractorSearchRecipe:PresenterToInteractorSearchRecipeProtocol{
             }
         })
     }
+    func saveRecentRecipe(recipes: [Hit]) {
+        recentRecipeData.saveRecipesData(recipes: recipes)
+    }
     
+    func getRecentRecipe() {
+        recentRecipeData.getRecipes( complation: { result in
+                   switch result
+                   {
+                   case .success(let recipes):
+                       DispatchQueue.main.async {
+                        self.presenter?.getRecentRecipeSuccess(recipes: recipes)
+                           
+                       }
+                       
+                   case .failure(let error):
+                    self.presenter?.getRecentRecipeFailure(error: error.localizedDescription)
+                   }
+               })
+            }
+    
+        
     
 }

@@ -15,13 +15,31 @@ class SearchRecipeViewController: UIViewController {
     @IBOutlet var searchBar: UISearchBar!
     
     var presenter: (ViewToPresenterSearchRecipeProtocol & InteractorToPresenterSearchRecipeProtocol)?
+    var noResponseLabel = UILabel()
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        searchBar.text = ""
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.viewDidLoad()
         nibRegester()
+        
+       setUpLabel()
     }
-    
+    func setUpLabel(){
+        noResponseLabel.frame = CGRect(x: 0, y: 0, width: 350, height: 200)
+        noResponseLabel.text =
+        """
+        the recipe you searching for does not exist
+        """
+        noResponseLabel.center = self.view.center
+        noResponseLabel.numberOfLines=1
+        self.view.addSubview(noResponseLabel)
+        noResponseLabel.isHidden=true
+        
+    }
     func nibRegester(){
         var nib = UINib(nibName: "RecipeTableViewCell", bundle: nil)
         self.searchTableView.register(nib, forCellReuseIdentifier: "searchCell")
@@ -58,6 +76,14 @@ extension SearchRecipeViewController:UISearchBarDelegate{
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         presenter?.searchBarTextDidChange(searchText: searchText)
     }
+    
+    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        return presenter?.searchBarshouldChangeTextIn(text: text, range: range) ?? false
+    }
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        presenter?.searchBarTextDidBeginEditing()
+
+    }
 }
 
 extension SearchRecipeViewController:UICollectionViewDelegate,UICollectionViewDataSource{
@@ -69,17 +95,33 @@ extension SearchRecipeViewController:UICollectionViewDelegate,UICollectionViewDa
         return presenter?.collectionViewSetItem(collectionView: healthCatagory, cellForItemAt: indexPath) ?? UICollectionViewCell()
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        presenter?.collectionViewDidSelectItemAt(indexPath: indexPath)
+        presenter?.collectionViewDidSelectItemAt(collectionView: healthCatagory,indexPath: indexPath)
     }
     
     
 }
 extension SearchRecipeViewController: PresenterToViewSearchRecipeProtocol{
+    func reLoadCollectionView() {
+        healthCatagory.reloadData()
+    }
+    
+   
+    
+    func onGettingNoRicpes() {
+        searchTableView.isHidden=true
+        noResponseLabel.isHidden=false
+    }
+    
+    func hideLabel(){
+        noResponseLabel.isHidden=true
+    }
     func onFatchResponseSuccess() {
         searchTableView.reloadData()
     }
     
     func onFatchResponseFailure(error: String) {
+        
+
         print(error)
     }
     
@@ -91,5 +133,17 @@ extension SearchRecipeViewController: PresenterToViewSearchRecipeProtocol{
         print(error)
     }
     
-    
+    func hideTabaleView() {
+        searchTableView.isHidden=true
+    }
+      
+    func showTabaleView() {
+        searchTableView.isHidden=false
+    }
+    func onGettingRecentRecipeSuccess(){
+        searchTableView.reloadData()
+    }
+    func onGettingRecentRecipeFailure(error: String){
+        print(error)
+    }
 }

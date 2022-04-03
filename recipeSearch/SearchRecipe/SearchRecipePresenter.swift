@@ -7,13 +7,17 @@
 //
 
 import UIKit
+import SDWebImage
 class SearchRecipePresenter: ViewToPresenterSearchRecipeProtocol{
    
     var response:Response?
     let health = Health()
     private var searchText=String()
     private var healthRequast=String()
-   
+    var savedRcipe = [Hit]()
+    var savedRcipeFilter:Bool = true
+    var image = UIImage()
+    
     
     weak var view: PresenterToViewSearchRecipeProtocol?
     var interactor: PresenterToInteractorSearchRecipeProtocol?
@@ -26,7 +30,9 @@ class SearchRecipePresenter: ViewToPresenterSearchRecipeProtocol{
     }
     
     func viewDidLoad() {
-        // view did loed
+        view?.hideTabaleView()
+        interactor?.getRecentRecipe()
+
     }
     
     func reload() {
@@ -34,24 +40,41 @@ class SearchRecipePresenter: ViewToPresenterSearchRecipeProtocol{
     }
     
     func tableViewNumberOfRows() -> Int {
+        if savedRcipeFilter == true {
+            return savedRcipe.count
+        }else{
         guard let count = response?.hits?.count else { return 0 }
         return count
+        }
     }
     
     func tableViewSetCell(tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as! RecipeTableViewCell
-            guard let label = self.response?.hits?[indexPath.row].recipe?.label else {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as! RecipeTableViewCell
+        if savedRcipeFilter == true {
+            cell.recipeTitle.text = savedRcipe[indexPath.row].recipe?.label
+            cell.source.text = savedRcipe[indexPath.row].recipe?.source
+            guard let healthLabels = self.savedRcipe[indexPath.row].recipe?.healthLabels else {
                 return cell
             }
-            guard let source = self.response?.hits?[indexPath.row].recipe?.source else {
-                return cell
-            }
-            guard let healthLabels = self.response?.hits?[indexPath.row].recipe?.healthLabels else {
-                return cell
-            }
-            cell.recipeTitle.text = label
-            cell.source.text = source
-            cell.updatehealthLabels(healthLabels:healthLabels)
+            guard let imageURL = self.savedRcipe[indexPath.row].recipe?.image else { return cell }
+            cell.recipeImage.sd_setImage(with: URL(string: imageURL))
+            cell.updatehealthLabels(healthLabels: healthLabels)
+        }else{
+        guard let label = self.response?.hits?[indexPath.row].recipe?.label else {
+            return cell
+        }
+        guard let source = self.response?.hits?[indexPath.row].recipe?.source else {
+               return cell
+        }
+        guard let healthLabels = self.response?.hits?[indexPath.row].recipe?.healthLabels else {
+            return cell
+        }
+            guard let imageURL = self.response?.hits?[indexPath.row].recipe?.image else { return cell }
+            cell.recipeImage.sd_setImage(with: URL(string: imageURL))
+        cell.recipeTitle.text = label
+        cell.source.text = source
+        cell.updatehealthLabels(healthLabels:healthLabels)
+        }
             return cell
     }
     
@@ -73,15 +96,70 @@ class SearchRecipePresenter: ViewToPresenterSearchRecipeProtocol{
     }
     
     func tableViewDidSelectRowAt(ForRowAt indexPath: IndexPath) {
+        if savedRcipeFilter == true {
+            guard let recipe = self.savedRcipe[indexPath.row].recipe else{return}
+            router?.pushToRecipeDetails(on: view, with: recipe)
+        }else{
         guard let recipe = response?.hits?[indexPath.row].recipe else { return}
+        guard let hit = response?.hits?[indexPath.row] else { return}
+        var conter = 0
+            for recipe in savedRcipe {
+                if recipe.recipe?.label == hit.recipe?.label{
+                    
+                    savedRcipe.remove(at: conter)
+                }
+                conter += 1
+            }
+        self.savedRcipe.insert(hit, at: 0)
+           
+            
+        let count = savedRcipe.count
+        if count > 10{
+            savedRcipe.removeSubrange(10...count)
+        }
+         let hits = savedRcipe
+        interactor?.saveRecentRecipe(recipes: hits)
         router?.pushToRecipeDetails(on: view, with: recipe)
+        }
     }
     
     func searchBarTextDidChange(searchText: String) {
-        interactor?.fatchResponse(query: searchText, health: healthRequast)
-        self.searchText = searchText
+        view?.hideLabel()
+        view?.showTabaleView()
+        if searchText == ""{
+            savedRcipeFilter = true
+            interactor?.getRecentRecipe()
+        }else{
+            savedRcipeFilter = false
         
+        
+        self.searchText = searchText.replacingOccurrences(of: " ", with: "%20")
+    
+        print(self.searchText)
+        interactor?.fatchResponse(query: self.searchText, health: healthRequast)
+        }
     }
+    
+    func searchBarshouldChangeTextIn(text:String ,range: NSRange)->Bool{
+        if range.lowerBound == 0 && text == " "{
+            return false
+        }
+        let allowedCharacters = CharacterSet(charactersIn:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvxyz ").inverted
+        let components = text.components(separatedBy: allowedCharacters)
+        let filtered = components.joined(separator: "")
+        if text == filtered {
+            return true
+        } else {
+            return false
+        }
+    }
+    func searchBarTextDidBeginEditing(){
+        savedRcipeFilter = true
+        view?.showTabaleView()
+        savedRcipeFilter = true
+        view?.onGettingRecentRecipeSuccess()
+    }
+
     
     func collectionViewNumberOfItems() -> Int {
         return health.health.count
@@ -90,26 +168,41 @@ class SearchRecipePresenter: ViewToPresenterSearchRecipeProtocol{
     func collectionViewSetItem(collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "healthLabelsCell", for: indexPath) as!HealthLabelsCollectionViewCell
         cell.healthLabels.text = health.health[indexPath.row]
+        cell.healthLabels.backgroundColor = .lightGray
+        cell.layer.cornerRadius = 5
         return cell
     }
     
-    func collectionViewDidSelectItemAt(indexPath: IndexPath) {
+    func collectionViewDidSelectItemAt(collectionView: UICollectionView,indexPath: IndexPath) {
+        if savedRcipeFilter == false {
         switch health.health[indexPath.row] {
         case "all":
             healthRequast = ""
+            view?.reLoadCollectionView()
         default:
             healthRequast.append(contentsOf: "&health="+health.health[indexPath.row])
+            let selectedCell = collectionView.cellForItem(at: indexPath) as! HealthLabelsCollectionViewCell
+            
+            selectedCell.healthLabels.backgroundColor = .systemTeal
         }
+        
         interactor?.fatchResponse(query: searchText, health: healthRequast)
+        }
     }
     
     
 }
 extension SearchRecipePresenter:InteractorToPresenterSearchRecipeProtocol{
-
+    
+    
+   
     func fatchResponseSuccess(response: Response) {
         self.response = response
+        if self.response?.count == 0 {
+            view?.onGettingNoRicpes()
+        }else{
         view?.onFatchResponseSuccess()
+    }
     }
 
     func fatchResponseFailure(error: String) {
@@ -128,5 +221,14 @@ extension SearchRecipePresenter:InteractorToPresenterSearchRecipeProtocol{
 
     func fatchNextResponseFailure(error: String) {
         view?.onFatchNextResponseFailure(error: error)
+    }
+    func getRecentRecipeSuccess(recipes: [Hit]) {
+        
+        self.savedRcipe = recipes
+        view?.onGettingRecentRecipeSuccess()
+    }
+       
+    func getRecentRecipeFailure(error: String) {
+        view?.onGettingRecentRecipeFailure(error: error)
     }
 }

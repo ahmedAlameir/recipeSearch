@@ -17,6 +17,8 @@ class NetworkServices {
         guard let url = URL(string: (healthURL.replacingOccurrences(of: "type=public&q=", with: "type=public&q="+query)))else{
             return
         }
+
+
         let request = URLRequest(url: url)
                   let task = URLSession.shared.dataTask(with: request) { (data, _, erorr) in
                       guard let data = data else{
