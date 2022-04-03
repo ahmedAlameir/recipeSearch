@@ -29,13 +29,13 @@ class SearchRecipeViewController: UIViewController {
        setUpLabel()
     }
     func setUpLabel(){
-        noResponseLabel.frame = CGRect(x: 0, y: 0, width: 350, height: 200)
+        noResponseLabel.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
         noResponseLabel.text =
         """
         the recipe you searching for does not exist
         """
         noResponseLabel.center = self.view.center
-        noResponseLabel.numberOfLines=1
+        noResponseLabel.numberOfLines=3
         self.view.addSubview(noResponseLabel)
         noResponseLabel.isHidden=true
         

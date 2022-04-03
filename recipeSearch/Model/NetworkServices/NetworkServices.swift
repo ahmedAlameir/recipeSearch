@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 class NetworkServices {
     let baseURL = "https://api.edamam.com/api/recipes/v2?type=public&q=&app_id=05d81b04&app_key=b179f1aa9fdb0d7e411ec4a96653d02a"
 
